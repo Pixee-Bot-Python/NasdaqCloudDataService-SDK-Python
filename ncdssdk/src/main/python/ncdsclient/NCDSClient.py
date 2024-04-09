@@ -94,7 +94,7 @@ class NCDSClient:
             list: A list of messages from the given topic
         """
         self.logger.debug(
-            f"Before initializing ncds_kafka_consumer in top_messages")
+            "Before initializing ncds_kafka_consumer in top_messages")
         kafka_consumer = self.ncds_kafka_consumer(topic_name, timestamp)
         self.logger.debug("kafka_consumer is now trying to consume")
         records = kafka_consumer.consume(

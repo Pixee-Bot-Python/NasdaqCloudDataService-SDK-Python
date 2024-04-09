@@ -123,7 +123,7 @@ class NCDSSession:
                 if message is None:
                     print(f"No Records Found for the Topic: {self.topic}")
                 else:
-                    print(f"value :" + str(message.value()))
+                    print("value :" + str(message.value()))
 
         except KafkaException as e:
             logging.exception(f"Error in cont stream {e.args[0].str()}")
