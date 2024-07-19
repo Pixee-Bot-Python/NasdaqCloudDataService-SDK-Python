@@ -1,6 +1,6 @@
 #import avro_json_serializer
-import random
 import string
+import secrets
 
 
 class AvroMocker:
@@ -15,9 +15,9 @@ class AvroMocker:
             name = field.name
             field_type = field.type.fullname
             if field_type == "int" or field_type == "long":
-                record[name] = random.randint(0, 100000000)
+                record[name] = secrets.SystemRandom().randint(0, 100000000)
             elif field_type == 'string':
-                record[name] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+                record[name] = ''.join(secrets.SystemRandom().choices(string.ascii_uppercase + string.digits, k=10))
 
         #serializer = avro_json_serializer.AvroJsonSerializer(self.schema)
         #return serializer.to_json(record)
