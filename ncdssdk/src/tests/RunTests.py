@@ -9,6 +9,7 @@ from pytest_kafka import (
     make_zookeeper_process, make_kafka_server, make_kafka_consumer,
     terminate,
 )
+from security import safe_command
 
 ROOT = Path(__file__).parent.parent.parent.parent
 THIS_DIR = Path(__file__).parent
@@ -25,7 +26,7 @@ kafka_server = make_kafka_server(KAFKA_BIN, 'zookeeper_proc', teardown_fn=teardo
 
 def test_integration(kafka_server: Tuple[Popen, int]):
     RUN_TESTS_CMD = ['pytest', '-s', THIS_DIR / 'NCDSSDKPyTest.py']
-    test_process = subprocess.Popen(RUN_TESTS_CMD)
+    test_process = safe_command.run(subprocess.Popen, RUN_TESTS_CMD)
     test_process.wait()
     delete_test_topics()
     sleep(5)
@@ -40,6 +41,6 @@ def delete_test_topics():
     delete_gids_topic_cmd = [str(KAFKA_SCRIPTS) +
                              "/kafka-topics.sh", "--zookeeper", "localhost:2181", "--delete", "--topic",
                              "GIDS.stream"]
-    subprocess.Popen(delete_ctrl_topic_cmd)
-    subprocess.Popen(delete_mock_topic_cmd)
-    subprocess.Popen(delete_gids_topic_cmd)
+    safe_command.run(subprocess.Popen, delete_ctrl_topic_cmd)
+    safe_command.run(subprocess.Popen, delete_mock_topic_cmd)
+    safe_command.run(subprocess.Popen, delete_gids_topic_cmd)
